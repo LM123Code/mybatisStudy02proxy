@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mybatis02proxy.mapper.StudentMapper">
+    <select id="selectStudentById" parameterType="int" resultType="com.mybatis02proxy.entities.Student">
+        select id, name, sex from student where id = #{id};
+    </select>
+    <select id="selectStudentsByName" parameterType="String" resultType="com.mybatis02proxy.entities.Student">
+        select id, name, sex from student where name like '%${value}%';
+    </select>
+    <insert id="insertStudent" parameterType="com.mybatis02proxy.entities.Student" >
+        <selectKey keyProperty="id" keyColumn="id" order="AFTER" resultType="int">
+            select last_insert_id();
+        </selectKey>
+        insert into student(name, sex)  values (#{name}, #{sex})
+    </insert>
+    <insert id="updateStudent" parameterType="com.mybatis02proxy.entities.Student" >
+        update student set name = #{name}, sex = #{sex} where id = #{id};
+    </insert>
+    <delete id="deleteStudentById" parameterType="int">
+        delete from student where id = #{id};
+    </delete>
+</mapper>
